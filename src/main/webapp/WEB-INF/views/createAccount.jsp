@@ -30,8 +30,10 @@
                         <label class="label">パスワード</label>
                         <input type="password" class="input" id="password" name="password" required>
                         <label class="label">パスワード（確認用）</label>
-                        <div>${sample}</div>
                         <input type="password" class="input" id="passwordForCheck" name="passwordForCheck" required>
+                        <c:if test="$(!empty error)">
+                        	<div class="error">${error}</div>
+                        </c:if>
                         <input type="submit" class="button primary" value="作成する" >
                     </form>
                 </div>

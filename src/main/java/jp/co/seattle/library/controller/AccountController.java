@@ -66,21 +66,19 @@ public class AccountController {
 
         //メール、PW、確認PW、全て半角英数かチェック
         if (!isEmailValid || !isValidPW || !isValidPWForCheck) {
-            //遷移してほしい画面のjsp名
-            model.addAttribute("sample", "入力が正しくありません");
+            //フロントにエラーメッセージを返す
+            model.addAttribute("error", "入力が正しくありません");
             return "createAccount";
-
         }
 
+        //PW、確認PW、一致しているかチェック
         if (!password.equals(passwordForCheck)) {
-            model.addAttribute("sample", "入力が正しくありません");
+            //フロントにエラーメッセージを返す
+            model.addAttribute("error", "入力が正しくありません");
             return "createAccount";
         }
 
-        //フロントにエラーメッセージを返す
-        //フロントでメッセージを表示する
-        //model.addAttribute("sample", "入力が正しくありません");
-        //return "createAccount";
+
 
         userInfo.setPassword(password);
 
