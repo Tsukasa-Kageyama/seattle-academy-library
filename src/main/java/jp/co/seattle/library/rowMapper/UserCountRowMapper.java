@@ -19,5 +19,4 @@ public class UserCountRowMapper implements RowMapper<UserInfo> {
         userInfo.setPassword(rs.getString("password"));
         return userInfo;
     }
-
 }

@@ -58,7 +58,6 @@ public class AccountController {
 
 
         // TODO バリデーションチェック、パスワード一致チェック実装
-
         userInfo.setPassword(password);
         usersService.registUser(userInfo);
 
