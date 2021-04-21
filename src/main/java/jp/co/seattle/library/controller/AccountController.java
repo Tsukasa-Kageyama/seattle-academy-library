@@ -78,8 +78,6 @@ public class AccountController {
             return "createAccount";
         }
 
-
-
         userInfo.setPassword(password);
 
         usersService.registUser(userInfo);

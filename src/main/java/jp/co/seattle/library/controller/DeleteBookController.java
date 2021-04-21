@@ -36,7 +36,7 @@ public class DeleteBookController {
         logger.info("Welcome delete! The client locale is {}.", locale);
 
 
-        return "";
+        return "home";
 
     }
 
