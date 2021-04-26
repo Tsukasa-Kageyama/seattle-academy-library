@@ -15,6 +15,9 @@ public class BookInfo {
 
     private String title;
 
+    //項目の追加
+    private String description;
+
     private String author;
 
     private String publisher;
@@ -23,18 +26,28 @@ public class BookInfo {
 
     private String thumbnail;
 
+    //項目の追加
+    private String isbn;
+
+
     public BookInfo() {
 
     }
 
     // コンストラクタ
-    public BookInfo(int bookId, String title, String author, String publisher, String publishDate, String thumbnail) {
+    public BookInfo(int bookId, String title, String author, String publisher, String publishDate, String thumbnail,
+            String description, String isbn) {
         this.bookId = bookId;
         this.title = title;
+        //項目の追加
+        this.description = description;
         this.author = author;
         this.publisher = publisher;
         this.publishDate = publishDate;
         this.thumbnail = thumbnail;
+        //項目の追加
+        this.isbn = isbn;
+
     }
 
 }
