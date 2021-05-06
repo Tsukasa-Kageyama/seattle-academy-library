@@ -36,9 +36,17 @@ public class EditBookController {
     @Autowired
     private ThumbnailService thumbnailService;
 
+    /**
+     *書籍情報を取得する
+     *パラムは引数
+     * @param locale ロケール情報
+     * @param bookId 編集する本のid
+     * @param model 
+     * @return 遷移先画面
+     */
+    @Transactional
     //7,details.jsp から飛ぶ
     // @RequestMapping　jspとjavaを繋ぐアドレス
-    @Transactional
     @RequestMapping(value = "/editBook", method = RequestMethod.POST) //value＝actionで指定したパラメータ
     //RequestParamでname属性を取得                                      //GET→POST　details.jspのmethod="post"
     public String editBook(Locale locale,
@@ -49,22 +57,22 @@ public class EditBookController {
         return "editBook";
     }
 
-
-
     /**
      * 書籍情報を更新する
      *パラムは引数
      * @param locale ロケール情報
-     * @param locale ID
+     * @param id ID
      * @param title 書籍名
+     * @param description 説明
      * @param author 著者名
      * @param publisher 出版社
+     * @param publishDate 出版日
      * @param file サムネイルファイル
      * @param model モデル
+     * @param isbn isbn
      * @return 遷移先画面
      */
     @Transactional
-    //7
     @RequestMapping(value = "/updateBook", method = RequestMethod.POST)
     public String updateBook(Locale locale,
             //7.bookIdで既にある情報を表示する
@@ -149,7 +157,6 @@ public class EditBookController {
         booksService.editBook(bookInfo);
 
         // TODO 登録した書籍の詳細情報を表示するように実装
-        model.addAttribute("resultMessage", "更新完了");
         model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
 
         //  詳細画面に遷移する
