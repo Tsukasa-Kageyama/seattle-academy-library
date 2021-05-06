@@ -25,44 +25,66 @@ import jp.co.seattle.library.service.ThumbnailService;
 /**
  * Handles requests for the application home page.
  */
-@Controller //APIの入り口
-public class AddBooksController {
-    final static Logger logger = LoggerFactory.getLogger(AddBooksController.class);
+@Controller //details.jspから探す目標
+public class EditBookController {
+    final static Logger logger = LoggerFactory.getLogger(EditBookController.class);
 
     @Autowired
+    //自動的にインスタンス化　BooksService　newしてbooksService
     private BooksService booksService;
 
     @Autowired
     private ThumbnailService thumbnailService;
 
-    @RequestMapping(value = "/addBook", method = RequestMethod.GET) //value＝actionで指定したパラメータ
-    //RequestParamでname属性を取得
-    public String login(Model model) {
-        return "addBook";
-    }
-
     /**
-     * 書籍情報を登録する
+     *書籍情報を取得する
+     *パラムは引数
      * @param locale ロケール情報
-     * @param title 書籍名
-     * @param author 著者名
-     * @param publisher 出版社
-     * @param file サムネイルファイル
-     * @param model モデル
+     * @param bookId 編集する本のid
+     * @param model 
      * @return 遷移先画面
      */
     @Transactional
-    @RequestMapping(value = "/insertBook", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
-    public String insertBook(Locale locale,
+    //7,details.jsp から飛ぶ
+    // @RequestMapping　jspとjavaを繋ぐアドレス
+    @RequestMapping(value = "/editBook", method = RequestMethod.POST) //value＝actionで指定したパラメータ
+    //RequestParamでname属性を取得                                      //GET→POST　details.jspのmethod="post"
+    public String editBook(Locale locale,
+            @RequestParam("bookId") Integer bookId,
+            //7.RequestParam　jspの変数を受け取る
+            Model model) {//
+        model.addAttribute("bookInfo", booksService.getBookInfo(bookId));
+        return "editBook";
+    }
+
+    /**
+     * 書籍情報を更新する
+     *パラムは引数
+     * @param locale ロケール情報
+     * @param id ID
+     * @param title 書籍名
+     * @param description 説明
+     * @param author 著者名
+     * @param publisher 出版社
+     * @param publishDate 出版日
+     * @param file サムネイルファイル
+     * @param model モデル
+     * @param isbn isbn
+     * @return 遷移先画面
+     */
+    @Transactional
+    @RequestMapping(value = "/updateBook", method = RequestMethod.POST)
+    public String updateBook(Locale locale,
+            //7.bookIdで既にある情報を表示する
+            //リクエストパラメータとはクライアント側のフォームから送られてきたデータ
+            @RequestParam("bookId") Integer bookId,
+            //7.更新するための新たな箱を追加する
             @RequestParam("title") String title,
-            //4,項目の追加
             @RequestParam("description") String description,
             @RequestParam("author") String author,
             @RequestParam("publisher") String publisher,
-            //
-            @RequestParam("publish_date") String publishDate,
+            @RequestParam("publishDate") String publishDate,
             @RequestParam("thumbnail") MultipartFile file,
-            //4,項目の追加
             @RequestParam("isbn") String isbn,
 
             Model model) {
@@ -70,16 +92,14 @@ public class AddBooksController {
 
         // パラメータで受け取った書籍情報をDtoに格納する。
         BookDetailsInfo bookInfo = new BookDetailsInfo();
+        //7,bookId
+        bookInfo.setBookId(bookId);
         bookInfo.setTitle(title);
-        //4,項目の追加
         bookInfo.setDescription(description);
         bookInfo.setAuthor(author);
         bookInfo.setPublisher(publisher);
-        //4,
         bookInfo.setPublishDate(publishDate);
-        //4,項目の追加
         bookInfo.setIsbn(isbn);
-
 
         // クライアントのファイルシステムにある元のファイル名を設定する
         String thumbnail = file.getOriginalFilename();
@@ -99,7 +119,7 @@ public class AddBooksController {
                 // 異常終了時の処理
                 logger.error("サムネイルアップロードでエラー発生", e);
                 model.addAttribute("bookDetailsInfo", bookInfo);
-                return "addBook";
+                return "editBook";
             }
         }
 
@@ -108,7 +128,7 @@ public class AddBooksController {
                 || StringUtils.isNullOrEmpty(publisher)
                 || StringUtils.isNullOrEmpty(publishDate)) {
             model.addAttribute("errorMessage", "必須項目を入力してください");
-            return "addBook";
+            return "editBook";
         }
 
         //出版日YYYYMMDD
@@ -118,7 +138,7 @@ public class AddBooksController {
             df.parse(publishDate);
         } catch (ParseException p) {
             model.addAttribute("errorMessage", "ISBNの桁数または半角英数が正しくありません<br>出版日は半角数字のYYYYMMDD形式で入力してください");
-            return "addBook";
+            return "editBook";
         }
 
         //　バリデーションチェック
@@ -130,15 +150,14 @@ public class AddBooksController {
             //フロントにエラーメッセージを返す
             model.addAttribute("errorMessage", "ISBNの桁数または半角英数が正しくありません<br>出版日は半角数字のYYYYMMDD形式で入力してください");
             //returnで返す
-            return "addBook";
+            return "editBook";
         }
 
         // 書籍情報を新規登録する
-        booksService.registBook(bookInfo);
+        booksService.editBook(bookInfo);
 
         // TODO 登録した書籍の詳細情報を表示するように実装
-        model.addAttribute("resultMessage", "登録完了");
-        model.addAttribute("bookDetailsInfo", bookInfo);
+        model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
 
         //  詳細画面に遷移する
         return "details";
