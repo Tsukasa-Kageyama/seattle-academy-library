@@ -63,10 +63,10 @@ public class BulkBookController {
         int num = 0;
 
         String line = null;
-        try {
+        try (
             InputStream stream = uploadFile.getInputStream();
             Reader reader = new InputStreamReader(stream);
-            BufferedReader buf = new BufferedReader(reader);
+                BufferedReader buf = new BufferedReader(reader);) {
             while ((line = buf.readLine()) != null) {
 
                 //カンマで区切り、それぞれの配列に格納
