@@ -58,7 +58,6 @@
                     <input type="file" accept="image/*" name="thumbnail" id="thumbnail">
                 </div>
                 <div class="content_right">
-                
                     <c:if test="${!empty errorMessage}">
                         <div class="error">${errorMessage}</div>
                     </c:if>
@@ -123,7 +122,6 @@
                 <button type="submit" id="add-btn" class="btn_addBook">登録</button>
             </div>
         </form>
-        </div>
     </main>
 </body>
 </html>
