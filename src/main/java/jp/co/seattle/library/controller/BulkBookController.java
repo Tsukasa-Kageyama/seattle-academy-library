@@ -39,14 +39,13 @@ public class BulkBookController {
     private BooksService booksService;
 
     @RequestMapping(value = "/bulkBook", method = RequestMethod.GET) //value＝actionで指定したパラメータ
-    //RequestParamでname属性を取得
     public String bulk(Model model) {
         return "bulkBook";
     }
 
     /**
      * @param locale
-     * @param file アップロードされたcsvファイル
+     * @param uploadFile アップロードされたcsvファイル
      * @param model
      * @return
      */
@@ -61,7 +60,7 @@ public class BulkBookController {
         List<String[]> booklist = new ArrayList<String[]>();
         //エラー文はwhile文の外、エラー用のリスト
         List<String> errorList = new ArrayList<String>();
-        int a = 0;
+        int num = 0;
 
         String line = null;
         try {
@@ -75,7 +74,7 @@ public class BulkBookController {
                 String[] data = new String[6];
                 data = line.split(",");
                 booklist.add(data);
-                a++;
+                num++;
 
                 //必須項目はあるか
                 //0~3までの要素チェック
@@ -83,7 +82,7 @@ public class BulkBookController {
                 if (StringUtils.isNullOrEmpty(data[0]) || StringUtils.isNullOrEmpty(data[1])
                         || StringUtils.isNullOrEmpty(data[2]) || StringUtils.isNullOrEmpty(data[3])) {
                     //エラーメッセージをlistに格納
-                    errorList.add(a + "行目の必須項目がありません");
+                    errorList.add(num + "行目の必須項目がありません");
                 }
 
                 //文字列、形式は合っているか(バリデーションチェック)
@@ -94,7 +93,7 @@ public class BulkBookController {
                     df.parse(data[3]);
                 } catch (ParseException p) {
                     //エラーメッセージをlistに格納
-                    errorList.add(a + "行目の出版日は半角数字のYYYYMMDD形式で入力してください");
+                    errorList.add(num + "行目の出版日は半角数字のYYYYMMDD形式で入力してください");
 
                 }
 
@@ -102,7 +101,7 @@ public class BulkBookController {
                 boolean isValidIsbn = data[4].matches("([0-9]{10}|[0-9]{13})?$");
                 if (!isValidIsbn) {
                     //エラーメッセージをlistに格納
-                    errorList.add(a + "行目のISBNの桁数または半角英数が正しくありません");
+                    errorList.add(num + "行目のISBNの桁数または半角英数が正しくありません");
 
                 }
             }
