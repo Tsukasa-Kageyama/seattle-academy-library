@@ -58,7 +58,7 @@ public class BulkBookController {
             Model model) {
         logger.info("Welcome insertBooks.java! The client locale is {}.", locale);
 
-        List<String[]> list = new ArrayList<String[]>();
+        List<String[]> booklist = new ArrayList<String[]>();
         //エラー文はwhile文の外、エラー用のリスト
         List<String> errorList = new ArrayList<String>();
         int a = 0;
@@ -71,10 +71,10 @@ public class BulkBookController {
             while ((line = buf.readLine()) != null) {
 
                 //カンマで区切り、それぞれの配列に格納
-                //String[] strArray = (line.split(","));
+                //String[] strArray = (line.split(","));　←省略形
                 String[] data = new String[6];
                 data = line.split(",");
-                list.add(data);
+                booklist.add(data);
                 a++;
 
                 //必須項目はあるか
@@ -107,8 +107,6 @@ public class BulkBookController {
                 }
             }
 
-            //listで書籍情報を格納
-            //list.add(line);
 
             //list内にエラーメッセージかあるかどうか
             if (!(errorList.size() == 0)) {
@@ -117,14 +115,14 @@ public class BulkBookController {
             }
 
             // パラメータで受け取った書籍情報をDtoに格納する。
-            for (int i = 0; i < list.size(); i++) {
+            for (int i = 0; i < booklist.size(); i++) {
                 BookDetailsInfo bookInfo = new BookDetailsInfo();
-                bookInfo.setTitle(list.get(i)[0]);
-                bookInfo.setAuthor(list.get(i)[1]);
-                bookInfo.setPublisher(list.get(i)[2]);
-                bookInfo.setPublishDate(list.get(i)[3]);
-                bookInfo.setIsbn(list.get(i)[4]);
-                bookInfo.setDescription(list.get(i)[5]);
+                bookInfo.setTitle(booklist.get(i)[0]);
+                bookInfo.setAuthor(booklist.get(i)[1]);
+                bookInfo.setPublisher(booklist.get(i)[2]);
+                bookInfo.setPublishDate(booklist.get(i)[3]);
+                bookInfo.setIsbn(booklist.get(i)[4]);
+                bookInfo.setDescription(booklist.get(i)[5]);
 
                 // 書籍情報を新規登録する
                 booksService.registBook(bookInfo);
