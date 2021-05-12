@@ -58,6 +58,19 @@ public class BooksService {
         return bookDetailsInfo;
     }
 
+    /**
+     * bookIdのみを取得するメソッド
+     */
+
+    public int getBookId() {
+
+        //IDの最大値を取得する
+        String sql = "SELECT MAX(ID) FROM books";
+
+        int getBookId = jdbcTemplate.queryForObject(sql, Integer.class);
+
+        return getBookId;
+    }
 
 
     /**

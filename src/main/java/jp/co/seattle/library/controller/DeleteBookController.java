@@ -42,7 +42,7 @@ public class DeleteBookController {
         logger.info("Welcome delete! The client locale is {}.", locale);
 
         bookdservice.deletingBook(bookId);
-        model.addAttribute("BookList", bookdservice.getBookList());
+        model.addAttribute("bookList", bookdservice.getBookList());
 
         return "home";
 

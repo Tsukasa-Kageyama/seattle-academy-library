@@ -156,6 +156,7 @@ public class EditBookController {
         // 書籍情報を新規登録する
         booksService.editBook(bookInfo);
 
+        model.addAttribute("rentOk", "貸出し可");
         // TODO 登録した書籍の詳細情報を表示するように実装
         model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
 
