@@ -17,10 +17,9 @@ public class RentService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
-
     /**
      * rentテーブルに追加する
+     * @param bookId　書籍ID
      */
     public void rentBook(int bookId) {
         //4,description,isbn
@@ -28,9 +27,11 @@ public class RentService {
 
         jdbcTemplate.update(sql);
     }
-    
+
     /**
      * rentテーブルに取得する
+     * @param bookId　書籍ID
+     * @return
      */
     public int rentCheck(int bookId) {
         String sql = "SELECT COUNT(BOOK_ID) FROM rent WHERE BOOK_ID =" + bookId;
@@ -41,10 +42,11 @@ public class RentService {
         return getRentId;
     }
 
+
     /**
      * rentテーブルのレコードを削除する
+     * @param bookId　書籍ID
      */
-
     public void returnBook(int bookId) {
         String sql = "DELETE FROM rent WHERE BOOK_ID =" + bookId;
 
@@ -53,4 +55,3 @@ public class RentService {
     }
 
 }
-
