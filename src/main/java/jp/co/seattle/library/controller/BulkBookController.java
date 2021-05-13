@@ -64,8 +64,8 @@ public class BulkBookController {
 
         String line = null;
         try (
-            InputStream stream = uploadFile.getInputStream();
-            Reader reader = new InputStreamReader(stream);
+                InputStream stream = uploadFile.getInputStream();
+                Reader reader = new InputStreamReader(stream);
                 BufferedReader buf = new BufferedReader(reader);) {
             while ((line = buf.readLine()) != null) {
 
@@ -105,7 +105,6 @@ public class BulkBookController {
 
                 }
             }
-
 
             //list内にエラーメッセージかあるかどうか
             if (!(errorList.size() == 0)) {
