@@ -19,16 +19,21 @@
         </div>
         <div class="right">
             <ul>
-                <li><a href="<%= request.getContextPath()%>/home" class="menu">Home</a></li>
-                <li><a href="<%= request.getContextPath()%>/">ログアウト</a></li>
+                <li><a href="<%=request.getContextPath()%>/home" class="menu">Home</a></li>
+                <li><a href="<%=request.getContextPath()%>/">ログアウト</a></li>
             </ul>
+            <form action="search" method="POST">
+                <input id="searchWord" class="search1" placeholder="書籍名" type="text" name="searchWord">
+                <button type="submit" class="">🔍</button>
+            </form>
         </div>
     </header>
     <main>
         <h1>Home</h1>
-        <a href="<%= request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a>
-        <a href="<%= request.getContextPath()%>/bulkBook" class="btn_bulk_book">一括登録</a>
-
+        <a href="<%=request.getContextPath()%>/addBook" class="btn_add_book">書籍の追加</a> <a href="<%=request.getContextPath()%>/bulkBook" class="btn_bulk_book">一括登録</a>
+        <c:if test="${!empty errorMessage}">
+            <div class="error">${errorMessage}</div>
+        </c:if>
         <div class="content_body">
             <c:if test="${!empty resultMessage}">
                 <div class="error_msg">${resultMessage}</div>
@@ -38,15 +43,12 @@
                     <c:forEach var="bookInfo" items="${bookList}">
                         <div class="books">
                             <form method="post" class="book_thumnail" action="<%=request.getContextPath()%>/details">
-                                <a href="javascript:void(0)" onclick="this.parentNode.submit();">
-                                    <c:if test="${empty bookInfo.thumbnail}">
+                                <a href="javascript:void(0)" onclick="this.parentNode.submit();"> <c:if test="${empty bookInfo.thumbnail}">
                                         <img class="book_noimg" src="resources/img/noImg.png">
-                                    </c:if>
-                                    <c:if test="${!empty bookInfo.thumbnail}">
+                                    </c:if> <c:if test="${!empty bookInfo.thumbnail}">
                                         <img class="book_noimg" src="${bookInfo.thumbnail}">
                                     </c:if>
-                                </a>
-                            <input type="hidden" name="bookId" value="${bookInfo.bookId}">
+                                </a> <input type="hidden" name="bookId" value="${bookInfo.bookId}">
                             </form>
                             <ul>
                                 <li class="book_title">${bookInfo.title}</li>
