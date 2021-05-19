@@ -72,7 +72,6 @@ public class BooksService {
         return getBookId;
     }
 
-
     /**
      * 書籍を登録する
      *
@@ -90,10 +89,10 @@ public class BooksService {
 
         jdbcTemplate.update(sql);
     }
-    
+
     //更新
     public void editBook(BookDetailsInfo bookInfo) {
-        String sql ="UPDATE books set title = '" + bookInfo.getTitle() + "',"
+        String sql = "UPDATE books set title = '" + bookInfo.getTitle() + "',"
                 + "description = '" + bookInfo.getDescription() + "',"
                 + "author = '" + bookInfo.getAuthor() + "',"
                 + "publisher = '" + bookInfo.getPublisher() + "',"
@@ -117,4 +116,19 @@ public class BooksService {
         String sql = "DELETE FROM books WHERE id =" + bookId;
         jdbcTemplate.update(sql);
     }
+
+    /**
+     * 入力された書籍名からIDを取得
+     * @param searchWord 入力された検索ワード
+     * @return
+     */
+    public List<BookInfo> getSearchList(String searchWord) {
+
+        List<BookInfo> getedBookList = jdbcTemplate.query(
+                "SELECT * FROM books WHERE TITLE LIKE '%" + searchWord + "%'ORDER BY title asc;",
+                new BookInfoRowMapper());
+
+        return getedBookList;
+    }
+
 }
