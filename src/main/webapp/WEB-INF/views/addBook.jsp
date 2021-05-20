@@ -58,7 +58,7 @@
                     <input type="file" accept="image/*" name="thumbnail" id="thumbnail">
                 </div>
                 <div class="content_right">
-                    <c:if test="${!empty errorMessage}">
+                    <c:if test="${bookDetailsInfo.thumbnailUrl == 'null'}">
                         <div class="error">${errorMessage}</div>
                     </c:if>
                     <div>
