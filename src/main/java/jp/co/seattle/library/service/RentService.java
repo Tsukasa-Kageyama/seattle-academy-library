@@ -39,17 +39,13 @@ public class RentService {
      * @return
      */
     public int rentCheck(int bookId) {
-        //rentTBL内から選択された書籍のIDを元に、一番数の大きいrentID（貸出ID）を検索
-        String rentMaxID = "SELECT MAX(RENT_ID) FROM rent WHERE BOOK_ID =" + bookId;
-        Integer rentId = jdbcTemplate.queryForObject(rentMaxID, Integer.class);
+        //rentTBL内から選択された書籍IDの中で一番数の大きいrentID（貸出ID）を元にDELETED_FLAG（論理削除）を検索
+        String sql = "SELECT MAX(RENT_ID) FROM rent WHERE BOOK_ID =" + bookId + " AND DELETED_FLAG = 0";
+        Integer getRentId = jdbcTemplate.queryForObject(sql, Integer.class);
 
-        if (rentId == null) {//貸出IDがない場合（一度も貸出が行われていない）、DELETED_FLAG＝1（貸出可の状態）で返す。
+        if (getRentId == null) {//貸出IDがない場合（一度も貸出が行われていない）、DELETED_FLAG＝1（貸出可の状態）で返す。
             return 1;
         }
-
-        //検索されたrentIDを元にDELETED_FLAG（論理削除）を検索
-        String sql = "SELECT DELETED_FLAG FROM rent WHERE RENT_ID =" + rentId;
-        int getRentId = jdbcTemplate.queryForObject(sql, Integer.class);
 
         return getRentId;
     }
