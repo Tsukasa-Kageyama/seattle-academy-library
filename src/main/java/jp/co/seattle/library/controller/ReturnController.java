@@ -46,9 +46,9 @@ public class ReturnController {
         rentService.returnBook(bookId);
         model.addAttribute("rentOk", "貸出し可");
         model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
+        model.addAttribute("rentList", rentService.getRentList(bookId));
 
         return "details"; //jspファイル名
     }
 
 }
-

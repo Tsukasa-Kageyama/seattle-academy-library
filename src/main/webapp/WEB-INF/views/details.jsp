@@ -113,6 +113,27 @@
                 </c:if>
             </form>
         </div>
+        <div class=table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>貸出日</th>
+                        <th>返却日</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="rentInfo" items="${rentList}">
+                        <tr>
+                            <td>${rentInfo.rentDate}</td>
+                            <td>${rentInfo.returnDate}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
+        <c:if test="${!empty errorMessage}">
+            <div class="error">${errorMessage}</div>
+        </c:if>
     </main>
 </body>
 </html>
