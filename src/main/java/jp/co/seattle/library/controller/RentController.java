@@ -27,7 +27,6 @@ public class RentController {
     @Autowired
     private BooksService booksService;
 
-
     /**
      * @param locale
      * @param bookId 詳細画面上の本のID
@@ -47,9 +46,9 @@ public class RentController {
         rentService.rentBook(bookId);
         model.addAttribute("rentNg", "貸出し中");
         model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
+        model.addAttribute("rentList", rentService.getRentList(bookId));
 
         return "details"; //jspファイル名
     }
 
 }
-

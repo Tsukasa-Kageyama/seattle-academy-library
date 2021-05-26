@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,14 +44,22 @@ public class DetailsController {
         // デバッグ用ログ
         logger.info("Welcome detailsControler.java! The client locale is {}.", locale);
 
-        int idCount = rentService.rentCheck(bookId);
-        if (idCount == 0) { //true　rentテーブルにbookIdがない　0が返ってくる
+        int getRentId = rentService.rentCheck(bookId);
+        if (getRentId == 1) { //rentテーブルのDELETED_FLAGが0の場合（貸出可）
             model.addAttribute("rentOk", "貸出し可");
         } else {
             model.addAttribute("rentNg", "貸出し中");
         }
 
+        if (CollectionUtils.isEmpty(rentService.getRentList(bookId))) {
+            model.addAttribute("errorMessage", "貸出履歴がありません");
+            model.addAttribute("bookDetailsInfo", bookdService.getBookInfo(bookId));
+
+            return "details";
+        }
+
         model.addAttribute("bookDetailsInfo", bookdService.getBookInfo(bookId));
+        model.addAttribute("rentList", rentService.getRentList(bookId));
 
         return "details";
     }
